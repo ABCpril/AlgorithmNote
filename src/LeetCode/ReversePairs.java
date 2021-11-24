@@ -7,24 +7,23 @@ package LeetCode;
  * @Date: 2021/11/23
  */
 public class ReversePairs {
-    static int cnt = 0;
+    int cnt = 0;
 
     public int reversePairs(int[] nums) {
-        int n = nums.length - 1;
-        mergeSort(nums, 0, n);
+        int[] temp = new int[nums.length];
+        mergeSort(nums, 0, temp.length - 1, temp);
         return cnt;
     }
 
-    private static void mergeSort(int[] nums, int l, int r) {
+    private void mergeSort(int[] nums, int l, int r, int[] temp) {
         // 递归的出口
         if (l >= r) return;
 
         int mid = (l + r) >> 1;
-        mergeSort(nums, l, mid);
-        mergeSort(nums, mid + 1, r);
+        mergeSort(nums, l, mid, temp);
+        mergeSort(nums, mid + 1, r, temp);
 
         // 归并
-        int[] temp = new int[nums.length];
         int i = l, j = mid + 1, k = 0;
         while (i <= mid && j <= r) {
             if (nums[i] <= nums[j]) {
@@ -45,8 +44,8 @@ public class ReversePairs {
             temp[k++] = nums[j++];
         }
         // 把temp中的数复制回原数组nums
-        for (i = l, k = 0; i <= r; i++, k++) {
-            nums[i] = temp[k];
+        for (i = l, k = 0; i <= r; ) {
+            nums[i++] = temp[k++];
         }
     }
 }
